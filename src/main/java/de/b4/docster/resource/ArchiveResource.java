@@ -1,8 +1,7 @@
 package de.b4.docster.resource;
 
-import com.github.junrar.Archive;
-import de.b4.docster.ArchiveService;
-import de.b4.docster.model.ArchiveRoot;
+import de.b4.docster.service.ArchiveService;
+import de.b4.docster.model.Archive;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -17,7 +16,7 @@ public class ArchiveResource {
     ArchiveService archiveService;
 
     @GET
-    public ArchiveRoot getArchive() {
-        return archiveService.getArchiveRoot();
+    public Archive getArchive() {
+        return archiveService.getRoot();
     }
 }
