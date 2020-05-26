@@ -13,8 +13,8 @@ import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @ApplicationScoped
 public class ArchiveService {
@@ -23,7 +23,7 @@ public class ArchiveService {
     @ConfigProperty(name = "docster.datapath", defaultValue = "data")
     String dataPath;
 
-    static Archive root;
+    Archive root;
     EmbeddedStorageManager storageManager;
 
     void onStart(@Observes StartupEvent ev) {
@@ -53,12 +53,16 @@ public class ArchiveService {
         return root;
     }
 
+    public EmbeddedStorageManager getStorageManager() {
+        return storageManager;
+    }
+
     private Archive initializeArchive() {
         Archive archive = new Archive();
         archive.setName("MainArchive");
         archive.setPath("Documents");
         archive.setDescription("The main archive");
-        List<DocumentType> documentTypes = new ArrayList<>();
+        Set<DocumentType> documentTypes = new HashSet<>();
         documentTypes.add(new DocumentType("Portable Document Format", "pdf", "application/pdf"));
         documentTypes.add(new DocumentType("Text", "txt", "text/plain"));
         documentTypes.add(new DocumentType("Microsoft Word", "doc", "application/msword"));
@@ -73,6 +77,7 @@ public class ArchiveService {
         documentTypes.add(new DocumentType("JPEG", "jpeg", "image/jpeg"));
         documentTypes.add(new DocumentType("TIFF", "tif", "image/tiff"));
         archive.setDocumentTypes(documentTypes);
+        archive.setCategories(new HashSet<>());
         return archive;
     }
 }
